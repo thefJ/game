@@ -86,7 +86,13 @@ class GameController extends AbstractController
 
         $handler->handle($command);
 
-        return $this->json(['status' => ApiMessage::SUCCESS_CREATED_CODE]);
+        return new JsonResponse(
+            [
+                'status' => ApiMessage::SUCCESS_CREATED_CODE,
+                'message' => ApiMessage::SUCCESS_MESSAGE
+            ],
+            ApiMessage::SUCCESS_CREATED_CODE,
+        );
     }
 
     /**
