@@ -1,0 +1,8 @@
+api:
+    resource: ../../src/Presentation/Api/Controller/
+    prefix: /api/v1
+    name_prefix: api.
+    trailing_slash_on_root: false
+    type: annotation
+    defaults:
+        _format: json
