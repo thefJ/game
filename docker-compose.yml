@@ -1,0 +1,52 @@
+version: '3.1'
+
+services:
+  game-nginx:
+    build:
+      context: ./docker
+      dockerfile: nginx.docker
+    volumes:
+      - ./services/game:/app
+    depends_on:
+      - game-php-fpm
+    ports:
+      - "80:80"
+  game-php-fpm:
+    build:
+      context: ./docker
+      dockerfile: php-fpm.docker
+    volumes:
+      - ./services/game:/app
+    depends_on:
+      - game-postgres
+  game-php-cli:
+    build:
+      context: ./docker
+      dockerfile: php-cli.docker
+    volumes:
+      - ./services/game:/app
+      - composer:/root/.composer/cache
+    depends_on:
+      - game-postgres
+  game-postgres:
+    build:
+      context: ./docker
+      dockerfile: postgres.docker
+    volumes:
+      - game-postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "54321:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  game-postgres:
+  composer:

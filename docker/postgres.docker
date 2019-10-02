@@ -1,0 +1,5 @@
+FROM postgres:11.5-alpine
+
+COPY ./postgres/pg_trgm_enable.sql /docker-entrypoint-initdb.d
+
+WORKDIR /app
